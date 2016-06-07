@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Inner:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="ClassInner.war" />
+  </artifact>
+</component>

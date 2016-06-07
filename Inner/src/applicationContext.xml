@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+    <!-- -->
+    <!--<bean id="musicBox" class="onlyfun.caterpillar.MusicBoxFactory" factory-method="createMusicBox" scope="prototype">
+    </bean>-->
+<!--
+    <bean id="uppercaseModifier" class="onlyfun.beanprocess.UppercaseModifier"/>
+    <bean id="helloBeanPost" class="onlyfun.beanprocess.HelloBeanPost">
+        <property name="helloWorld" value="hei world"/>
+        <property name="name" value="wocao"/>
+    </bean>
+-->
+
+    <!--dataSource-->
+   <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/userdata"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+  <!--  <bean id="userDAO" class="spring.datasource.UserDAO">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>-->
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>com/bjsxt/hibernate/user/HibernateDemo.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="userDAO" class="com.bjsxt.hibernate.user.UserDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+
+
+    <!--<bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="userDAO" class="spring.datasource.UserDAO">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="userDAOProxy"
+    class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <list><value>spring.datasource.IUserDAO</value></list>
+        </property>
+        <property name="target" ref="userDAO"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="insert*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>-->
+<!--AOP-->
+    <!--<bean id="logBeforeAdvice" class="onlyfun.aop.beforeafteradivce.LogBeforeAdviceAnnotation"/>-->    <!--<bean id="logAfterAdvice" class="onlyfun.aop.beforeafteradivce.LogAfterAdvice"/>-->
+    <!--<bean id="helloSpeaker" class="onlyfun.aop.beforeafteradivce.HelloSpeaker"/>
+    <aop:aspectj-autoproxy/>-->
+    <!--<bean id="helloProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <prope rty name="proxyInterfaces" value="onlyfun.aop.beforeafteradivce.IHello"/>
+        <property name="target" ref="helloSpeaker"/>
+        <property name="interceptorNames">
+            <list>
+                <value>logBeforeAdvice</value>
+                <value>logAfterAdvice</value>
+            </list>
+        </property>
+    </bean>-->
+    <!--name match-->
+    <!--<bean id="LogBeforeAdvice2" class="onlyfun.aop.namematch.LogBeforeAdvice"/>
+    <bean id="helloAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName" value="*Newbie"/>
+        <property name="advice" ref="logBeforeAdvice"/>
+    </bean>
+    <bean id="helloSpeaker2" class="onlyfun.aop.namematch.HelloSpeaker"/>
+    <bean id="helloProxy2" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces" value="onlyfun.aop.namematch.IHello"/>
+        <property name="target" ref="helloSpeaker2"/>
+        <property name="interceptorNames"><list><value>helloAdvisor</value></list></property>
+    </bean>-->
+    <!--introduction-->
+    <!--<bean id="some" class="onlyfun.aop.introduction.Some"/>
+    <bean id="otherIntroduction" class="onlyfun.aop.introduction.OtherIntroduction"/>
+    <bean id="otherAdvisor" class="org.springframework.aop.support.DefaultIntroductionAdvisor">
+        <constructor-arg ref="otherIntroduction"/>
+        <constructor-arg value="onlyfun.aop.introduction.IOther"/>
+    </bean>
+    <bean id="proxyFactoryBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces" value="onlyfun.aop.introduction.ISome"/>
+        <property name="target" ref="some"/>
+        <property name="interceptorNames">
+            <list><value>otherAdvisor</value></list>
+        </property>
+    </bean>-->
+    <!--lock-->
+    <!--<bean id="some" class="onlyfun.aop.introduction.Some"/>
+    <bean id="lockIntroduction" class="onlyfun.aop.introduction.Deledating"/>
+    <bean id="lockAdvisor" class="org.springframework.aop.support.DefaultIntroductionAdvisor">
+        <constructor-arg ref="lockIntroduction"/>
+        <constructor-arg value="onlyfun.aop.introduction.ILockable"/>
+    </bean>
+    <bean id="proxyFactoryBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces" value="onlyfun.aop.introduction.ISome"/>
+        <property name="target" ref="some"/>
+        <property name="interceptorNames">
+            <list><value>lockAdvisor</value></list>
+        </property>
+    </bean>-->
+<!-- IOC-->
+  <!-- <bean id="helloWorld" name="helloWorld3" class="com.spring.test.HelloWorld" scope="prototype">
+       <property name="message" value="Hello World!"/>
+   </bean>
+   <alias name="helloWorld" alias="helloWorld2"/>
+    <bean id="musicbox" class="onlyfun.caterpillar.MusicBoxFactory" factory-method="createMusicBox">
+    </bean>
+
+    <bean id="inheritedsomebean" abstract="true">
+        <property name="name">
+            <value>James</value>
+        </property>
+        <property name="age">
+            <value>18</value>
+        </property>
+    </bean>
+
+    <bean id="some" class="onlyfun.caterpillar2.SomeBean" parent="inheritedsomebean">
+        <property name="name">
+            <value>Lebu</value>
+        </property>
+    </bean>
+    &lt;!&ndash; hellobean&ndash;&gt;
+    <bean id="dateBean" class="java.util.Date"/>
+    <bean id="helloBean" class="com.spring.test.HelloBean" autowire="byType">
+        <property name="helloworld" value="hello!"/>
+        <property name="date" ref="dateBean"/>
+    </bean>
+    &lt;!&ndash; someBeanTwo&ndash;&gt;
+    &lt;!&ndash;hellobeancustom&ndash;&gt;
+ &lt;!&ndash;   <bean id="configBean" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="onlyfun.customeditor.User">
+                    <bean id="userEditor" class="onlyfun.customeditor.UserEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="helloBeanCustom" class="onlyfun.customeditor.HelloBeanCustom">
+        <property name="helloWorld" value="Hello"/>
+        <property name="user" value="Justin,22423423"/>
+    </bean>
+    &lt;!&ndash;messagesource&ndash;&gt;
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="onlyfun.messagesource.messages"/>
+    </bean>-->
+</beans>
